@@ -1,99 +1,114 @@
-form {
-    width: 240px;
-    height: 240px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    color: var(--form-color);
-  }
-  
-  input {
-    border: none;
-    border-bottom: 1px solid var(--gray-color);
-  }
-  
-  input::placeholder,
-  textarea::placeholder {
-    font-size: 12px;
-    color: var(--placeholder-color);
-  }
-  
-  input:focus,
-  textarea:focus,
-  select:focus {
-    outline: none;
-  }
-  
-  textarea {
-    border: none;
-    border-bottom: 1px solid var(--gray-color);
-  }
-  
-  .header {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    z-index: 1;
-  }
-  
-  .search-box {
-    background: white;
-    padding: 10px 70px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    position: relative;
-  }
-  
-  .search-box input {
-    border: none;
-    outline: none;
-  }
-  
-  .add-review-button {  
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 10px;
-  }
-  
-  .add-review-button:hover {
-    background: #0056b3;
-  }
-  
-  .center-marker {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1; /* Ensure it's above the map but below other UI elements like modals */
-  }
-  
-  .suggestions-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    background: white;
-    border: 1px solid #ccc;
-    max-height: 200px;
-    overflow-y: auto;
-    position: absolute;
-    width: 400px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    z-index: 1;
-  }
-  
-  .suggestions-list li {
-    padding: 8px;
-    cursor: pointer;
-  }
-  
-  .suggestions-list li:hover {
-    background: #f0f0f0;
-  }
-  
+.map-page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+.location-permission-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f0f0f0;
+  padding: 10px;
+  text-align: center;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.location-permission-banner p {
+  margin-right: 15px;
+}
+
+.location-permission-banner button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f0f0f0;
+  padding: 10px;
+  z-index: 1;
+}
+
+.search-container {
+  width: 300px;
+}
+
+.search-box {
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-top: none;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1000;
+}
+
+.suggestions-list li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestions-list li:hover {
+  background-color: #f0f0f0;
+}
+
+.map-action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.add-review-button, 
+.view-pins-button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.map-container {
+  flex-grow: 1;
+  position: relative;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.center-marker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
