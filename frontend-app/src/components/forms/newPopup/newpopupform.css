@@ -1,7 +1,8 @@
 /* General form styling */
 form {
   width: 100%;
-  max-width: 350px;
+  min-width: 350px; /* Increased max-width */
+  max-height: 80vh; /* Set a maximum height for the form */
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -10,6 +11,7 @@ form {
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   box-sizing: border-box; /* Ensure padding does not push elements out */
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 /* Label styling */
@@ -22,8 +24,9 @@ label {
 /* Input, textarea, and select styles */
 input, textarea, select {
   width: 100%; /* Ensure inputs fill the available width */
-  padding: 10px;
+  padding: 6px 8px; /* Reduced padding for smaller height */
   font-size: 14px;
+  line-height: 1.2; /* Adjusted line height for better text alignment */
   color: var(--dark-gray-color);
   border: 1px solid var(--light-gray-color);
   border-radius: 5px;
@@ -53,19 +56,23 @@ textarea {
 }
 
 /* Submit button styling */
+/* Submit button styling */
 .submitButton {
-  padding: 10px;
-  background-color: var(--primary-color);
-  color: var(--white-color);
+  padding: 10px 20px; /* Adjust padding for better button size */
+  background-color: #007bff; /* Ensure color contrast */
+  color: white; /* Ensure text is visible */
   font-weight: 600;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  display: inline-block; /* Ensure it's displayed inline */
+  width: 100%; /* Make button stretch across the form */
+  margin-top: 15px; /* Add some spacing above the button */
 }
 
 .submitButton:hover {
-  background-color: var(--primary-color-dark);
+  background-color: #0463c9;
 }
 
 /* Responsive design */

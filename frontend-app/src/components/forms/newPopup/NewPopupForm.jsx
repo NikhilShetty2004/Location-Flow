@@ -51,6 +51,7 @@ const NewPopupForm = () => {
                     onChange={(e) => setDesc(e.target.value)}
                 />
                 <label>Rating</label>
+                
                 <select value={star} onChange={(e) => setStar(e.target.value)}>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -61,6 +62,7 @@ const NewPopupForm = () => {
                 <button type="submit" className="submitButton">
                     Add Pin
                 </button>
+                
             </form>
         </div>
     )

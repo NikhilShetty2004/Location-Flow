@@ -1,10 +1,9 @@
 import React, { useState, useEffect, lazy, Suspense, useContext } from "react";
-import Map, { NavigationControl, GeolocateControl } from "react-map-gl";
+import Map, { NavigationControl } from "react-map-gl";
 import axios from "axios";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./mappage.css";
 import Loader from "../components/ui/Loader";
-import MyLocationIcon from "@mui/icons-material/MyLocation";
 import MapMarker from "../components/marker/MapMarker";
 import debounce from "lodash.debounce";
 import apiRequest from "../lib/ApiReqest";
@@ -34,6 +33,7 @@ const MapPage = () => {
   const [searchInput, setSearchInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [locationPermission, setLocationPermission] = useState(null);
+  const [isLocationReady, setIsLocationReady] = useState(false);
 
   useEffect(() => {
     const getPins = async () => {
@@ -46,27 +46,42 @@ const MapPage = () => {
     };
     getPins();
 
-    // Check location permission status
+    // Request location permission on component mount
     if (currentUser) {
-      checkLocationPermission();
+      requestLocationPermission();
     }
   }, [currentUser]);
 
-  const checkLocationPermission = () => {
+  const requestLocationPermission = () => {
     if ("geolocation" in navigator) {
-      navigator.permissions.query({ name: 'geolocation' }).then((result) => {
-        setLocationPermission(result.state);
-        
-        if (result.state === 'granted') {
-          navigator.geolocation.getCurrentPosition((position) => {
-            setViewport({
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-              zoom: 14,
-            });
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Success callback
+          setViewport({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            zoom: 14,
           });
+          setLocationPermission('granted');
+          setIsLocationReady(true);
+        },
+        (error) => {
+          // Error callback
+          console.error("Location permission denied:", error);
+          setLocationPermission('denied');
+          setIsLocationReady(false);
+        },
+        {
+          // Options to make the prompt appear
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
         }
-      });
+      );
+    } else {
+      // Geolocation is not supported
+      setLocationPermission('unavailable');
+      setIsLocationReady(false);
     }
   };
 
@@ -114,21 +129,71 @@ const MapPage = () => {
     });
   };
 
+  // Render location permission request if not granted
+  if (!isLocationReady) {
+    return (
+      <div className="map-page-container">
+        <div className="navbar">
+          <div className="search-container">
+            <div className="search-box">
+              <input
+                type="text"
+                value={searchInput}
+                placeholder="Search for location"
+                onChange={handleInputChange}
+                disabled
+              />
+              {suggestions.length > 0 && (
+                <ul className="suggestions-list">
+                  {suggestions.map((suggestion) => (
+                    <li
+                      key={suggestion.id}
+                      onClick={() => handleSuggestionClick(suggestion)}
+                    >
+                      {suggestion.place_name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          <div className="map-action-buttons">
+            {currentUser && (
+              <>
+                <button 
+                  onClick={() => navigate("/pins")} 
+                  className="view-pins-button"
+                  disabled
+                >
+                  View My Pins
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="location-permission-modal-wrapper">
+          <div className="location-permission-modal">
+            <h2>Location Access Required</h2>
+            <p>This application requires your location to function properly.</p>
+            <button onClick={requestLocationPermission}>
+              Enable Location Access
+            </button>
+            {locationPermission === 'denied' && (
+              <p className="error-message">
+                Location access was denied. Please enable it in your browser settings.
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="map-page-container">
-      {/* Location Permission Prompt */}
-      {currentUser && locationPermission === 'prompt' && (
-        <div className="location-permission-banner">
-          <p>
-            Enable location access to get personalized map experience. 
-            <button onClick={checkLocationPermission}>
-              Enable Location
-            </button>
-          </p>
-        </div>
-      )}
-
-      {/* Navbar with search and action buttons */}
+      {/* Navbar */}
       <div className="navbar">
         <div className="search-container">
           <div className="search-box">
@@ -170,7 +235,7 @@ const MapPage = () => {
         </div>
       </div>
 
-      {/* Mapbox map */}
+      {/* Map container */}
       <div className="map-container">
         <Map
           mapboxAccessToken={process.env.REACT_APP_MAPBOX}
@@ -180,20 +245,6 @@ const MapPage = () => {
           style={{ width: '100%', height: '100%' }}
         >
           <NavigationControl position="top-left" />
-          {currentUser && (
-            <GeolocateControl
-              position="top-left"
-              trackUserLocation
-              showUserHeading
-              onGeolocate={(e) => {
-                setViewport({
-                  latitude: e.coords.latitude,
-                  longitude: e.coords.longitude,
-                  zoom: 14,
-                });
-              }}
-            />
-          )}
 
           {pins.map((p) => (
             <React.Fragment key={p._id}>
@@ -209,13 +260,6 @@ const MapPage = () => {
             <UserAuthentication />
           </Suspense>
         </Map>
-
-        {/* Conditionally render Fixed Marker at the center of the screen */}
-        {currentUser && (
-          <div className="center-marker">
-            <MyLocationIcon style={{ fontSize: 20, color: "black" }} />
-          </div>
-        )}
       </div>
     </div>
   );

@@ -6,32 +6,61 @@
   position: relative;
 }
 
-.location-permission-banner {
-  position: absolute;
+.location-permission-modal-wrapper {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #f0f0f0;
-  padding: 10px;
-  text-align: center;
-  z-index: 1000;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: rgba(0, 0, 0, 0.05);
+  z-index: 1000;
 }
 
-.location-permission-banner p {
-  margin-right: 15px;
+.location-permission-modal {
+  background-color: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  position: relative;
 }
 
-.location-permission-banner button {
+.location-permission-modal h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5em;
+}
+
+.location-permission-modal p {
+  margin-bottom: 25px;
+  color: #666;
+}
+
+.location-permission-modal button {
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
+  padding: 12px 24px;
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.location-permission-modal button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.error-message {
+  color: red;
+  margin-top: 20px;
+  font-size: 0.9em;
 }
 
 .navbar {
