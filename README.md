@@ -1,4 +1,4 @@
-# Map-Explore - MERN Stack Travel App
+# Map-Explore - MERN Stack 
 
 Map-Explore is a full-stack travel application built using the MERN (MongoDB, Express.js, React.js, Node.js) stack. It allows users to pin their visited locations on a map, add reviews for those locations, and view reviews posted by other users for places they intend to visit. The application utilizes the Mapbox API for map integration and provides a seamless experience for travel enthusiasts.
 
@@ -46,7 +46,8 @@ Map-Explore is a full-stack travel application built using the MERN (MongoDB, Ex
     # Install frontend dependencies
     cd frontend-app
     npm i 
-
+    or 
+    npm i --legacy-peer-deps
     # Install backend dependencies
     cd ../backend-app
     npm i
